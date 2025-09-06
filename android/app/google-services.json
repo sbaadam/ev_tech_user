@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1067378977822",
+    "project_id": "mr-ev-tech",
+    "storage_bucket": "mr-ev-tech.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067378977822:android:28a3674da6319d074f120f",
+        "android_client_info": {
+          "package_name": "com.example.ev_tech_user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTLB9R2Zv9OkxL3rYGgh6kaBTwvsGPXaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
