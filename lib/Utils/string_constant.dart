@@ -26,12 +26,13 @@ class StringsConstant {
   static const strUploadRC = 'Upload RC';
   static const strSubscriptionSummary = 'Subscription Summary';
   static const strServices = 'Services';
-  static const strCategory = 'Category';
+  static const strCategory = 'Categories';
   static const strSeeAll = 'See All';
   static const strYourActiveServices = 'Your Active Services';
   static const strUpcoming = 'Upcoming';
   static const strCompleted = 'Completed';
   static const strAllServices = 'All Services';
+  static const strAllCategorys = 'All Categories';
   static const strBook = 'Book';
   static const strSubscribed = 'Subscribed';
   static const strServiceDetails = 'Service Details';
@@ -55,11 +56,13 @@ class StringsConstant {
   static const strNote = 'Note';
   static const strApplyCouponCode = 'Apply Coupon Code';
   static const strServiceTotal = 'Service Total';
+  static const strServiceCharge = 'Service Charge';
   static const strOfferDiscount = 'Offer Discount';
   static const strCouponCodeDiscount = 'Coupon Code Discount';
   static const strCGST = 'CGST';
   static const strSGST = 'SGST';
   static const strGrandTotal = 'Grand Total';
+  static const strSubTotal = 'Sub Total';
   static const strTermsCondition = 'Terms & Condition';
   static const strThankYou = 'Thank You';
   static const strSorry = 'Sorry';
@@ -115,4 +118,13 @@ class StringsConstant {
   static const strTaxCharges = 'Tax & Charges';
   static const strTotal = 'Total';
   static const strRCBook = 'RC Book';
+  static const strSaveAddress = 'Save Address';
+  static const strAddAddress = 'Add Address';
+  static const strEditAddress = 'Edit Address';
+  static const strMobileNo = 'Mobile No.';
+  static const strCity = 'City';
+  static const strState = 'State';
+  static const strPincode = 'Pincode';
+  static const strAddressType = 'Address Type';
+  static const strCoupon = 'Coupon';
  }

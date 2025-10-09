@@ -37,7 +37,7 @@ class AppTheme {
    static Color appColorShade70 = HexColorOp("#2F2D2D",opacity: 0.70);
    static Color whiteColor = HexColor("#FFFFFF");
    static Color redColor = HexColorOp('#FE2E00',opacity:0.90);
-   static Color greenColor = HexColor("#8CC63F");
+   static Color   greenColor = HexColor("#8CC63F");
    static Color greenColorDark = HexColorOp("#8CC63F",opacity:0.90);
    static Color greenColor40 = HexColorOp("#8CC63F",opacity: 0.40);
    static Color greenColor25 = HexColorOp("#8CC63F",opacity: 0.25);

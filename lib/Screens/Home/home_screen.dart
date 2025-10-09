@@ -1,3 +1,4 @@
+import 'package:ev_tech_user/Screens/Home/Provider/home_provider.dart';
 import 'package:ev_tech_user/Screens/Home/Provider/user_provider.dart';
 import 'package:ev_tech_user/Screens/Service/service_screen.dart';
 import 'package:ev_tech_user/Screens/ServiceDetails/all_services_cat_screen.dart';
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   loadInit() {
     Future.microtask(() async {
       await Provider.of<UserProvider>(context, listen: false).getProfileApi(context);
+      await Provider.of<HomeProvider>(context, listen: false).getCategoriesApi(context);
     });
   }
   String getGreetingMessage() {
@@ -48,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider=Provider.of<UserProvider>(context);
+    final homeProvider=Provider.of<HomeProvider>(context);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -118,31 +121,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [CustomText(text: StringsConstant.strSubscriptionSummary, fontSize: 12, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor), SizedBox(height: 05), CustomText(text: 'Package Name', fontSize: 16, fontWeight: AppTheme.fontRegular)]),
                     Spacer(),
-                    Container(height: 60, padding: EdgeInsets.symmetric(horizontal: 10), alignment: Alignment.center, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: AppTheme.greenColor40), child: CustomText(text: '46 days', fontSize: 16, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor)),
+                    Container(height: 60, padding: EdgeInsets.symmetric(horizontal: 10), alignment: Alignment.center, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: AppTheme.greenColor40), child: CustomText(text: "${userProvider.userModel.data?.membershipDaysLeft??''} Days", fontSize: 16, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor)),
                   ],
                 ),
               ),
               SizedBox(height: 10),
-              Row(
+              if(homeProvider.categoriesModel.data!=null)Row(
                   children: [
-                    CustomText(text: StringsConstant.strServices, fontSize: 14, fontWeight: AppTheme.fontRegular),
+                    CustomText(text: StringsConstant.strCategory, fontSize: 14, fontWeight: AppTheme.fontRegular),
                     Spacer(),
                     GestureDetector(onTap: (){
                       widget.onService();
                     },child: CustomText(text: StringsConstant.strSeeAll, fontSize: 14, fontWeight: AppTheme.fontRegular)),
                   ]
               ),
-              SizedBox(height: 10),
-              SizedBox(
+              if(homeProvider.categoriesModel.data!=null)SizedBox(height: 10),
+              if(homeProvider.categoriesModel.data!=null)SizedBox(
                 height: 90,
                 child: ListView.builder(
-                  itemCount: nameList.length,
+                  itemCount: homeProvider.categoriesModel.data!.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () async {
+                            await homeProvider.setCateId(homeProvider.categoriesModel.data?[index].id.toString()??'');
                             newNextScreen(context,AllServicesCatScreen());
                           },
                           child: Container(
@@ -153,11 +157,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius: BorderRadius.circular(15),
                                 color: AppTheme.greenColor40
                             ),
-                            child:Image(image: AssetImage(index==0?ImageConstant.techAssistSvg:index==1?ImageConstant.cleanCareSvg:index==2?ImageConstant.powerCheckSvg:ImageConstant.autoCareSvg)),
+                            child:Image(image: NetworkImage("${ApiConstant.baseUrlImage}${homeProvider.categoriesModel.data?[index].image??''}"),fit: BoxFit.cover),
                           ),
                         ),
                         SizedBox(height: 05),
-                        CustomText(text: nameList[index], fontSize: 10, fontWeight: AppTheme.fontRegular)
+                        CustomText(text: homeProvider.categoriesModel.data?[index].name??'', fontSize: 10, fontWeight: AppTheme.fontRegular)
                       ],
                     );
                   },),

@@ -103,6 +103,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               CustomText(text: StringsConstant.strVehicleName, fontSize: 14, fontWeight: AppTheme.fontLight),
               SizedBox(height: 8),
               CustomTextField(hintText: StringsConstant.strVehicleName, controller: registerProvider.vehicleNameController),
+              SizedBox(height: 15),
               CustomText(text: StringsConstant.strVehicleNo, fontSize: 14, fontWeight: AppTheme.fontLight),
               SizedBox(height: 8),
               CustomTextField(hintText: '26562', controller: registerProvider.vehicleNoController, textCapitalization: TextCapitalization.characters),

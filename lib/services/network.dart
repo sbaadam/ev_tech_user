@@ -50,6 +50,29 @@ class NetworkProvider {
     }
     return null;
   }
+  Future<Response?> deleteRequest(
+      BuildContext context,
+      String endpoint, {
+        Map<String, String>? headers,
+      }) async {
+    // Connectivity check
+    final isConnected =
+        Provider.of<ConnectivityProvider>(context, listen: false).isConnected;
+    if (!isConnected) {
+      _navigateNoConnectionScreen(context);
+      return null;
+    }
+
+    try {
+      final response =
+      await _dio.delete(endpoint, options: Options(headers: headers ?? {}));
+      return response;
+    } on DioException catch (e) {
+      _handleError(e);
+    }
+
+    return null;
+  }
 
   /// 🔹 POST Request with File Upload
   Future<Response?> postRequestWithFile(BuildContext context, String endpoint, {required FormData body, Map<String, String>? headers}) async {

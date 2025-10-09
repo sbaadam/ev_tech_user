@@ -30,12 +30,14 @@ class BorderButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   Color? txtColor;
+  double? height;
+  double? radius;
   Color? borderColor;
 
-  BorderButton({super.key, required this.text, required this.onTap, this.txtColor, this.borderColor});
+  BorderButton({super.key, required this.text, required this.onTap, this.txtColor, this.height, this.radius, this.borderColor});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: onTap, child: Container(width: 335, height: 45, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.transparent, border: Border.all(color: borderColor ??  AppTheme.greenColor, width: 0.5)), alignment: Alignment.center, child: Text(text, style: TextStyle(fontFamily: 'LexendDeca', color: txtColor ??  AppTheme.greenColor, fontWeight: AppTheme.fontRegular, fontSize: 16))));
+    return GestureDetector(onTap: onTap, child: Container(width: 335, height: height??45, decoration: BoxDecoration(borderRadius: BorderRadius.circular(radius??15),color: Colors.transparent, border: Border.all(color: borderColor ??  AppTheme.greenColor, width: 0.5)), alignment: Alignment.center, child: Text(text, style: TextStyle(fontFamily: 'LexendDeca', color: txtColor ??  AppTheme.greenColor, fontWeight: AppTheme.fontRegular, fontSize: 16))));
   }
 }

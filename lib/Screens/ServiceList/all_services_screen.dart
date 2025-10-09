@@ -57,7 +57,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                   ),
                 ),
                 const SizedBox(width: 18),
-                CustomText(text: StringsConstant.strAllServices, fontSize: 16, fontWeight: AppTheme.fontSemiBold,color: AppTheme.whiteColor),
+                CustomText(text: StringsConstant.strAllCategorys, fontSize: 16, fontWeight: AppTheme.fontSemiBold,color: AppTheme.whiteColor),
               ],
             ),
           ),

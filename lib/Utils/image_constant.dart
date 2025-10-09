@@ -34,5 +34,9 @@ class ImageConstant {
   static const logoutSvg='${basePath}logout.svg';
   static const subscriptionSvg='${basePath}subscription.svg';
   static const listSvg='${basePath}list.svg';
+  static const deleteSvg='${basePath}delete.svg';
+  static const editSvg='${basePath}edit.svg';
+  static const couponSvg='${basePath}coupon.svg';
+  static const dummyImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHZqj-XReJ2R76nji51cZl4ETk6-eHRmZBRw&s';
 
 }

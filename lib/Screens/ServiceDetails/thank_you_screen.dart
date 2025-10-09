@@ -1,15 +1,20 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:ev_tech_user/Screens/BookingList/booking_list_screen.dart';
+import 'package:ev_tech_user/Screens/Home/Provider/home_provider.dart';
+import 'package:ev_tech_user/Screens/Home/Provider/user_provider.dart';
+import 'package:ev_tech_user/Screens/ServiceDetails/provider/booking_details_provider.dart';
 import 'package:ev_tech_user/Utils/app_conts.dart';
 import 'package:ev_tech_user/Utils/app_theme.dart';
 import 'package:ev_tech_user/Utils/string_constant.dart';
 import 'package:ev_tech_user/Widget/custom_button.dart';
 import 'package:ev_tech_user/Widget/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class ThankYouScreen extends StatefulWidget {
-  const ThankYouScreen({super.key});
+  String id;
+  ThankYouScreen({super.key,required this.id});
 
   @override
   State<ThankYouScreen> createState() => _ThankYouScreenState();
@@ -17,7 +22,16 @@ class ThankYouScreen extends StatefulWidget {
 
 class _ThankYouScreenState extends State<ThankYouScreen> {
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      Provider.of<BookingDetailsProvider>(context, listen: false).getBookingDetailsApi(context,widget.id);
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    final userProvider=Provider.of<UserProvider>(context);
+    final bookingProvider=Provider.of<BookingDetailsProvider>(context);
     return Scaffold(
       backgroundColor: AppTheme.appColor,
       body: Column(
@@ -28,7 +42,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
               Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: AppTheme.greenColor40, shape: BoxShape.circle), child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.greenColor, shape: BoxShape.circle), child: const Icon(Icons.check, size: 40, color: Colors.white))),
               const SizedBox(height: 12),
               CustomText(text: StringsConstant.strThankYou, fontSize: 20, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor),
-              CustomText(text: StringsConstant.strCarmenStewart, fontSize: 16, fontWeight: AppTheme.fontLight, color: AppTheme.whiteColor),
+              CustomText(text: userProvider.userModel.data?.name??'', fontSize: 16, fontWeight: AppTheme.fontLight, color: AppTheme.whiteColor),
             ],
           ),
           SizedBox(height: 20),
@@ -77,9 +91,9 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [CustomText(text: StringsConstant.strRegularVisit, fontSize: 16, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor), CustomText(text: StringsConstant.strPowerCheck, fontSize: 16, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor)]),
+                        Align(alignment: Alignment.topLeft,child: CustomText(text: bookingProvider.bookingDetailsModel.data?.service?.name??'', fontSize: 16, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor)),
                         const SizedBox(height: 8),
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: const [CustomText(text: StringsConstant.strDateTime, fontSize: 12, fontWeight: AppTheme.fontLight), CustomText(text: '11 July, 2024 11:00 PM', fontSize: 12, fontWeight: AppTheme.fontLight)]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children:  [CustomText(text: StringsConstant.strDateTime, fontSize: 12, fontWeight: AppTheme.fontLight), CustomText(text: '${bookingProvider.bookingDetailsModel.data?.date} ${bookingProvider.bookingDetailsModel.data?.time}', fontSize: 12, fontWeight: AppTheme.fontLight)]),
                         SizedBox(height: 60),
                          DottedLine(
                             direction: Axis.horizontal,
@@ -91,7 +105,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                             dashGapLength: 8,
                             dashGapColor: Colors.transparent),
                         SizedBox(height: 26),
-                        CustomText(text: '₹300', fontSize: 16, fontWeight: AppTheme.fontSemiBold,color: AppTheme.greenColor),
+                        CustomText(text: '₹${bookingProvider.bookingDetailsModel.data?.grandTotal}', fontSize: 16, fontWeight: AppTheme.fontSemiBold,color: AppTheme.greenColor),
                         SizedBox(height: 10),
                       ],
                     ),

@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:ev_tech_user/Screens/Auth/Provider/changepassword_provider.dart';
 import 'package:ev_tech_user/Screens/Auth/Provider/login_provider.dart';
 import 'package:ev_tech_user/Screens/Auth/Provider/register_provider.dart';
+import 'package:ev_tech_user/Screens/Home/Provider/home_provider.dart';
 import 'package:ev_tech_user/Screens/Home/Provider/user_provider.dart';
 import 'package:ev_tech_user/Screens/Profile/Provider/kyc_provider.dart';
+import 'package:ev_tech_user/Screens/ServiceDetails/provider/booking_details_provider.dart';
 import 'package:ev_tech_user/Screens/splash_screen.dart';
 import 'package:ev_tech_user/Utils/app_conts.dart';
 import 'package:ev_tech_user/Utils/app_theme.dart';
@@ -63,6 +65,8 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => RegisterProvider()),
         ChangeNotifierProvider(create: (context) => ChangePasswordProvider()),
         ChangeNotifierProvider(create: (context) => KycProvider()),
+        ChangeNotifierProvider(create: (context) => HomeProvider()),
+        ChangeNotifierProvider(create: (context) => BookingDetailsProvider()),
       ],
       child: const MyApp(),
     ),
