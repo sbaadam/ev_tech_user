@@ -127,4 +127,5 @@ class StringsConstant {
   static const strPincode = 'Pincode';
   static const strAddressType = 'Address Type';
   static const strCoupon = 'Coupon';
+  static const strNotification = 'Notification';
  }

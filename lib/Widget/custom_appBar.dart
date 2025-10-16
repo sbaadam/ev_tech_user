@@ -1,10 +1,15 @@
 import 'package:ev_tech_user/Utils/app_theme.dart';
+import 'package:ev_tech_user/Utils/image_constant.dart';
 import 'package:ev_tech_user/Widget/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CustomAppbar extends StatelessWidget {
   String text;
-  CustomAppbar({super.key,required this.text});
+  bool? isCart;
+  bool? isDelete;
+  Function? onDelete;
+  CustomAppbar({super.key,required this.text,this.isCart,this.isDelete,this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -14,20 +19,36 @@ class CustomAppbar extends StatelessWidget {
       decoration: BoxDecoration(color: Color(0xFF171717), borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), bottomLeft: Radius.circular(15)), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, offset: const Offset(0, 4))]),
       child: Row(
         children: [
-            Container(
-              height: 40,
-              width: 40,
-              decoration: const BoxDecoration(color: Color(0xFF516731), shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))]),
-              child: IconButton(
-                icon: Icon(Icons.arrow_back_ios_rounded, color: AppTheme.greenColor),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                iconSize: 20,
-              ),
+          Container(
+            height: 40,
+            width: 40,
+            decoration: const BoxDecoration(color: Color(0xFF516731), shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))]),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios_rounded, color: AppTheme.greenColor),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              iconSize: 20,
             ),
+          ),
           const SizedBox(width: 18),
           CustomText(text:text, fontSize: 16, fontWeight: AppTheme.fontSemiBold, color: AppTheme.greenColor),
+          Spacer(),
+          if(isDelete??false)GestureDetector(
+            onTap: (){
+              if(onDelete!=null){
+                onDelete!();
+              }
+            },
+            child: Container(height: 35,
+                width: 35,
+                decoration: const BoxDecoration(color: Color(0xFF516731), shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))]),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset(ImageConstant.deleteSvg),
+                )),
+          ),
+          if(isDelete??false)SizedBox(width: 10)
         ],
       ),
     );

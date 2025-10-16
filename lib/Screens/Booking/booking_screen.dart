@@ -4,6 +4,7 @@ import 'package:ev_tech_user/Utils/app_conts.dart';
 import 'package:ev_tech_user/Utils/app_theme.dart';
 import 'package:ev_tech_user/Utils/image_constant.dart';
 import 'package:ev_tech_user/Utils/string_constant.dart';
+import 'package:ev_tech_user/Widget/CommonTextfield.dart';
 import 'package:ev_tech_user/Widget/custom_appBar.dart';
 import 'package:ev_tech_user/Widget/custom_button.dart';
 import 'package:ev_tech_user/Widget/custom_text.dart';
@@ -101,7 +102,11 @@ class _BookingScreenState extends State<BookingScreen> {
                                       SizedBox(width: 10),
                                       CustomText(text: bookingProvider.bookingDetailsModel.data?.service?.name ?? '', fontSize: 14, fontWeight: AppTheme.fontRegular),
                                       Spacer(),
-                                      (bookingProvider.bookingDetailsModel.data?.service?.subscriptionPlansIds?.contains(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? false)
+                                      (bookingProvider.bookingDetailsModel.data?.service?.subscriptionPlansIds
+                                          ?.map((e) => int.tryParse(e))
+                                          .whereType<int>()
+                                          .any((id) => id <= (int.tryParse(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? 0))
+                                          ?? false)
                                           ? Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppTheme.greenColor40), child: CustomText(text: StringsConstant.strSubscribed, fontSize: 10, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor))
                                           : CustomText(text: '₹${bookingProvider.bookingDetailsModel.data?.service?.price ?? ''}', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.whiteColor),
                                     ],
@@ -109,7 +114,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                 ],
                               ),
                             ),
-                            if ((bookingProvider.bookingDetailsModel.data?.service?.subscriptionPlansIds?.contains(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? false) == false)
+                            if ((bookingProvider.bookingDetailsModel.data?.service?.subscriptionPlansIds
+                                ?.map((e) => int.tryParse(e))
+                                .whereType<int>()
+                                .any((id) => id <= (int.tryParse(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? 0))
+                                ?? false)
+                                == false)
                               Padding(
                                 padding: const EdgeInsets.only(left: 14, right: 14),
                                 child: Column(
@@ -289,9 +299,9 @@ class _BookingScreenState extends State<BookingScreen> {
 
                             SizedBox(height: 10)
                           ],
-
                         ),
                       ),
+                      SizedBox(height: 10),
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: AppTheme.appColorShade25),
@@ -311,7 +321,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: RatingBar.builder(
-                                          initialRating: 2,
+                                          initialRating: 0,
                                           minRating: 1,
                                           direction: Axis.horizontal,
                                           allowHalfRating: false,
@@ -326,6 +336,11 @@ class _BookingScreenState extends State<BookingScreen> {
                                       Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppTheme.greenColor40), child: CustomText(text: '2.0', fontSize: 10, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor))
                                     ],
                                   ),
+                                  SizedBox(height: 10),
+                                  CustomText(text: 'Vendor Reason', fontSize: 14, fontWeight: AppTheme.fontMedium),
+                                  SizedBox(height: 5),
+                                  CustomTextField(hintText: 'Description',maxLine: 3),
+                                  SizedBox(height: 10)
                                 ],
                               ),
                             ),
@@ -333,8 +348,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      BorderButton(text: StringsConstant.strReschedule, onTap: () {}),
-                      SizedBox(height: 10),
+
                       ButtonWidget(text: StringsConstant.strCancel, onTap: () {}, width: double.infinity),
                       SizedBox(height: 10),
                     ],

@@ -166,7 +166,7 @@ class RegisterProvider with ChangeNotifier {
           if (data['status'] == true) {
             showToast("✅ ${data['message'] ?? 'Update successfully'}");
             final userProvider = Provider.of<UserProvider>(context, listen: false);
-            userProvider.getProfileApi(context);
+            userProvider.getProfileApi();
             if (context.mounted) {
               Navigator.pop(context);
             }

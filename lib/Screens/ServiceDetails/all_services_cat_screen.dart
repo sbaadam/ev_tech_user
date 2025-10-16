@@ -145,7 +145,12 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                           SizedBox(height: 8),
                           Row(
                             children: [
-                              (serviceProvider.serviceListModel.services?[index].subscriptionPlansIds?.contains(userProvider.userModel.data?.subscriptionPlanId.toString()??'') ?? false) ?  Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppTheme.greenColor40), child: CustomText(text: StringsConstant.strSubscribed, fontSize: 10, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor)):CustomText(text: '₹${serviceProvider.serviceListModel.services?[index].price??''}', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.whiteColor) ,
+                              (serviceProvider.serviceListModel.services?[index].subscriptionPlansIds
+                                  ?.map((e) => int.tryParse(e))
+                                  .whereType<int>()
+                                  .any((id) => id <= (int.tryParse(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? 0))
+                                  ?? false)
+                                  ?  Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppTheme.greenColor40), child: CustomText(text: StringsConstant.strSubscribed, fontSize: 10, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor)):CustomText(text: '₹${serviceProvider.serviceListModel.services?[index].price??''}', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.whiteColor) ,
                               Spacer(),
                               GestureDetector(onTap: ()async{
                                 await serviceProvider.setServiceId(serviceProvider.serviceListModel.services?[index]??ServicesData());

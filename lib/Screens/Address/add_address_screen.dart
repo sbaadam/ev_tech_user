@@ -1,6 +1,4 @@
 import 'package:ev_tech_user/Screens/Address/Model/get_address_model.dart' as ad;
-import 'package:ev_tech_user/Screens/Home/Model/city_model.dart';
-import 'package:ev_tech_user/Screens/Home/Model/state_model.dart';
 import 'package:ev_tech_user/Screens/Home/Provider/home_provider.dart';
 import 'package:ev_tech_user/Utils/app_theme.dart';
 import 'package:ev_tech_user/Utils/custom_dropdown.dart';

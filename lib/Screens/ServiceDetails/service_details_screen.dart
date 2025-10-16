@@ -81,7 +81,11 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                             SizedBox(height: 8),
                             Row(children: [CustomText(text: homeProvider.serviceDetailsModel.services?.name ?? '', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor), Spacer(), Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppTheme.greenColor40), child: CustomText(text: '⭐ 4.0', fontSize: 10, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor))]),
                             SizedBox(height: 8),
-                            (homeProvider.serviceDetailsModel.services?.subscriptionPlansIds?.contains(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? false)
+                            (homeProvider.serviceDetailsModel.services?.subscriptionPlansIds
+                                ?.map((e) => int.tryParse(e))
+                                .whereType<int>()
+                                .any((id) => id <= (int.tryParse(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? 0))
+                                ?? false)
                                 ? Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppTheme.greenColor40), child: CustomText(text: StringsConstant.strSubscribed, fontSize: 10, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor))
                                 : CustomText(text: '₹${homeProvider.serviceDetailsModel.services?.price ?? ''}', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.whiteColor),
                           ],

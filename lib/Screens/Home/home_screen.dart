@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   loadInit() {
     Future.microtask(() async {
-      await Provider.of<UserProvider>(context, listen: false).getProfileApi(context);
+      await Provider.of<UserProvider>(context, listen: false).getProfileApi();
       await Provider.of<HomeProvider>(context, listen: false).getCategoriesApi(context);
     });
   }

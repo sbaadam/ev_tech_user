@@ -20,4 +20,6 @@ class ApiConstant {
   static const String getValidCoupon= 'get-valid-coupon?service_id=';
   static const String deleteAddress= 'delete-address?address_id=';
   static const String getBookedServices= 'get-booked-services?booked_service_id=';
+  static const String getNotification = 'get-notification';
+  static const String   deleteNotification = 'delete-notification';
 }

@@ -19,7 +19,7 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   int selectedIndex = 0;
   DateTime? lastBackPressTime;
-  bool _isNavigating = false; // Prevent double taps
+  bool _isNavigating = false;
 
   List<Widget> pages = const [];
 

@@ -10,7 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class UserProvider with ChangeNotifier {
   UserModel userModel = UserModel();
 
-  Future<void> getProfileApi(BuildContext context) async {
+  Future<void> getProfileApi() async {
     final String authToken = GlobalVariables.authToken ?? "";
 
     debugPrint("🔑 Token set: $authToken");
@@ -23,7 +23,7 @@ class UserProvider with ChangeNotifier {
     try {
       EasyLoading.show(status: 'Please wait...');
 
-      final response = await NetworkProvider().getRequest(context,ApiConstant.getUserDetails, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $authToken'});
+      final response = await NetworkProvider().getRequestWithoutContext(ApiConstant.getUserDetails, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $authToken'});
 
       if (response?.data == null) {
         showToast("No response from server ❌");

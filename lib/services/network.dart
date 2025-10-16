@@ -34,6 +34,16 @@ class NetworkProvider {
     return null;
   }
 
+  Future<Response?> getRequestWithoutContext(String endpoint, {Map<String, dynamic>? queryParams, Map<String, String>? headers}) async {
+    try {
+      final response = await _dio.get(endpoint, queryParameters: queryParams, options: Options(headers: headers ?? {}));
+      return response;
+    } on DioException catch (e) {
+      _handleError(e);
+    }
+    return null;
+  }
+
   /// 🔹 POST Request with connectivity check
   Future<Response?> postRequest(BuildContext context, String endpoint, {Map<String, dynamic>? body, Map<String, String>? headers}) async {
     final isConnected = Provider.of<ConnectivityProvider>(context, listen: false).isConnected;
@@ -50,22 +60,17 @@ class NetworkProvider {
     }
     return null;
   }
-  Future<Response?> deleteRequest(
-      BuildContext context,
-      String endpoint, {
-        Map<String, String>? headers,
-      }) async {
+
+  Future<Response?> deleteRequest(BuildContext context, String endpoint, {Map<String, String>? headers}) async {
     // Connectivity check
-    final isConnected =
-        Provider.of<ConnectivityProvider>(context, listen: false).isConnected;
+    final isConnected = Provider.of<ConnectivityProvider>(context, listen: false).isConnected;
     if (!isConnected) {
       _navigateNoConnectionScreen(context);
       return null;
     }
 
     try {
-      final response =
-      await _dio.delete(endpoint, options: Options(headers: headers ?? {}));
+      final response = await _dio.delete(endpoint, options: Options(headers: headers ?? {}));
       return response;
     } on DioException catch (e) {
       _handleError(e);
@@ -99,7 +104,7 @@ class NetworkProvider {
   /// 🔹 Error handling
   void _handleError(DioException e) {
     if (e.response != null) {
-      if(e.response?.statusCode!=404){
+      if (e.response?.statusCode != 404) {
         showToast('${e.response?.statusCode} → ${e.response?.data}');
         debugPrint("❌ API Error: ${e.response?.statusCode} → ${e.response?.data}");
       }

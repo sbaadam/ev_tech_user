@@ -26,18 +26,32 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
   bool isChecked = false;
 
   String formatDateTime(String date, String time) {
-    // Parse date
-    final parsedDate = DateFormat('dd-MM-yyyy').parse(date);
+  if (date.isEmpty || time.isEmpty) {
+    return '';
+  }
 
-    // Parse time
+  try {
+    // Parse date and time
+    final parsedDate = DateFormat('dd-MM-yyyy').parse(date);
     final parsedTime = DateFormat('HH:mm').parse(time);
 
-    // Merge date and time
-    final mergedDateTime = DateTime(parsedDate.year, parsedDate.month, parsedDate.day, parsedTime.hour, parsedTime.minute);
+    // Combine into one DateTime
+    final mergedDateTime = DateTime(
+      parsedDate.year,
+      parsedDate.month,
+      parsedDate.day,
+      parsedTime.hour,
+      parsedTime.minute,
+    );
 
-    // Format as '29 Sep, 2025 07:00 PM'
+    // Format to readable format
     return DateFormat('dd MMM, yyyy hh:mm a').format(mergedDateTime);
+  } catch (e) {
+    debugPrint('Error in formatDateTime: $e');
+    return '';
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +108,12 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: CustomText(text: homeProvider.servicesData.name ?? '', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor)), CustomText(text: '₹${homeProvider.servicesData.price ?? ''}', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.whiteColor)]),
+                                      Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: CustomText(text: homeProvider.servicesData.name ?? '', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor)), (homeProvider.servicesData.subscriptionPlansIds
+                                          ?.map((e) => int.tryParse(e))
+                                          .whereType<int>()
+                                          .any((id) => id <= (int.tryParse(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? 0))
+                                          ?? false)
+                                          ?  Container(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppTheme.greenColor40), child: CustomText(text: StringsConstant.strSubscribed, fontSize: 10, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor)):CustomText(text: '₹${homeProvider.servicesData.price??''}', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.whiteColor)]),
                                       SizedBox(height: 8),
                                       Html(
                                         data: homeProvider.servicesData.shortDescription ?? '',
@@ -126,7 +145,11 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                             SizedBox(height: 10),
                             CustomTextField(hintText: '', maxLine: 3, controller: homeProvider.noteCon),
                             SizedBox(height: 10),
-                            if ((homeProvider.servicesData.subscriptionPlansIds?.contains(userProvider.userModel.data?.subscriptionPlanId.toString()??'') ?? false)==false)
+                            if ((homeProvider.servicesData.subscriptionPlansIds
+                                ?.map((e) => int.tryParse(e))
+                                .whereType<int>()
+                                .any((id) => id <= (int.tryParse(userProvider.userModel.data?.subscriptionPlanId.toString() ?? '') ?? 0))
+                                ?? false)==false)
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
