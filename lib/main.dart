@@ -21,6 +21,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -139,14 +140,12 @@ class _MyAppState extends State<MyApp> {
         },
       );
 
-      // Handle notification in foreground
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         if (message.notification != null) {
           localNotification(message.notification!.title ?? '', message.notification!.body ?? '', message.data);
         }
       });
 
-      // Handle notification tap from terminated or background
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage msg) {
         print("Notification clicked: ${msg.data}");
       });
