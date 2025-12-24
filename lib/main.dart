@@ -29,7 +29,6 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel('high_importance_channel', 'High Importance Notifications', description: 'Micro Matching high importance channel', importance: Importance.high);
 
-// Flutter local notifications plugin instance
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> requestNotificationPermission() async {
@@ -52,6 +51,7 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await GlobalVariables.loadToken();
   await GlobalVariables.loadRole();
+  await GlobalVariables.loadSelectedAddress();
   // Create Android channel
   await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
 

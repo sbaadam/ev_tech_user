@@ -25,26 +25,27 @@ class UserModel {
 class Data {
   int? id;
   String? name;
-  String? profilePhoto;
+  Null? profilePhoto;
   String? mobile;
   String? email;
-  String? emailVerifiedAt;
+  Null? emailVerifiedAt;
   String? fcmToken;
   String? role;
-  String? stateId;
-  String? cityId;
+  int? stateId;
+  int? cityId;
   String? vehicleName;
   String? vehicleNumber;
   String? vehicleModel;
   String? vehicleYear;
   String? createdAt;
   String? updatedAt;
-  String? deletedAt;
+  Null? deletedAt;
   int? subscriptionPlanId;
   String? membershipExpiresAt;
-  String? state;
-  String? city;
-  String? membershipDaysLeft;
+  State? state;
+  City? city;
+  int? membershipDaysLeft;
+  int? notificationCount;
 
   Data(
       {this.id,
@@ -68,7 +69,8 @@ class Data {
         this.membershipExpiresAt,
         this.state,
         this.city,
-        this.membershipDaysLeft});
+        this.membershipDaysLeft,
+        this.notificationCount});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -90,9 +92,10 @@ class Data {
     deletedAt = json['deleted_at'];
     subscriptionPlanId = json['subscription_plan_id'];
     membershipExpiresAt = json['membership_expires_at'];
-    state = json['state'];
-    city = json['city'];
-    membershipDaysLeft = json['membership_days_left'].toString();
+    state = json['state'] != null ? new State.fromJson(json['state']) : null;
+    city = json['city'] != null ? new City.fromJson(json['city']) : null;
+    membershipDaysLeft = json['membership_days_left'];
+    notificationCount = json['notification_count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -116,9 +119,58 @@ class Data {
     data['deleted_at'] = this.deletedAt;
     data['subscription_plan_id'] = this.subscriptionPlanId;
     data['membership_expires_at'] = this.membershipExpiresAt;
-    data['state'] = this.state;
-    data['city'] = this.city;
+    if (this.state != null) {
+      data['state'] = this.state!.toJson();
+    }
+    if (this.city != null) {
+      data['city'] = this.city!.toJson();
+    }
     data['membership_days_left'] = this.membershipDaysLeft;
+    data['notification_count'] = this.notificationCount;
+    return data;
+  }
+}
+
+class State {
+  int? id;
+  String? name;
+  int? countryId;
+
+  State({this.id, this.name, this.countryId});
+
+  State.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    countryId = json['country_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['country_id'] = this.countryId;
+    return data;
+  }
+}
+
+class City {
+  int? id;
+  String? name;
+  int? stateId;
+
+  City({this.id, this.name, this.stateId});
+
+  City.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    stateId = json['state_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['state_id'] = this.stateId;
     return data;
   }
 }

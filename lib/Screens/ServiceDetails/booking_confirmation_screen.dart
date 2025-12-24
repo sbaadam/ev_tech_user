@@ -145,6 +145,21 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                             SizedBox(height: 10),
                             CustomTextField(hintText: '', maxLine: 3, controller: homeProvider.noteCon),
                             SizedBox(height: 10),
+                            GestureDetector(
+                              onTap: () {
+                                if (homeProvider.selectCoupon.discountAmount != null && homeProvider.selectCoupon.discountAmount != '') {
+                                  homeProvider.removeCoupon();
+                                } else {
+                                  newNextScreen(context, CouponScreen());
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: AppTheme.greenColor15),
+                                child: Row(children: [CustomText(text: (homeProvider.selectCoupon.discountAmount == null || homeProvider.selectCoupon.discountAmount == '') ? StringsConstant.strApplyCouponCode : 'Remove Coupon Code', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor), Spacer(), Icon((homeProvider.selectCoupon.discountAmount == null || homeProvider.selectCoupon.discountAmount == '') ? Icons.arrow_forward_ios_rounded : Icons.close, color: AppTheme.greenColor)]),
+                              ),
+                            ),
+                            SizedBox(height: 10),
                             if ((homeProvider.servicesData.subscriptionPlansIds
                                 ?.map((e) => int.tryParse(e))
                                 .whereType<int>()
@@ -153,21 +168,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      if (homeProvider.selectCoupon.discountAmount != null && homeProvider.selectCoupon.discountAmount != '') {
-                                        homeProvider.removeCoupon();
-                                      } else {
-                                        newNextScreen(context, CouponScreen());
-                                      }
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: AppTheme.greenColor15),
-                                      child: Row(children: [CustomText(text: (homeProvider.selectCoupon.discountAmount == null || homeProvider.selectCoupon.discountAmount == '') ? StringsConstant.strApplyCouponCode : 'Remove Coupon Code', fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor), Spacer(), Icon((homeProvider.selectCoupon.discountAmount == null || homeProvider.selectCoupon.discountAmount == '') ? Icons.arrow_forward_ios_rounded : Icons.close, color: AppTheme.greenColor)]),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
+
                                   CustomText(text: StringsConstant.strBookingDetails, fontSize: 14, fontWeight: AppTheme.fontRegular, color: AppTheme.greenColor),
                                   SizedBox(height: 8),
                                   Row(children: [CustomText(text: 'Service Charge', fontSize: 12, fontWeight: AppTheme.fontLight, color: AppTheme.whiteColor), Spacer(), CustomText(text: '₹${homeProvider.servicesData.price ?? ''}', fontSize: 12, fontWeight: AppTheme.fontLight, color: AppTheme.greenColor)]),

@@ -1,8 +1,14 @@
+import 'dart:convert';
+
+import 'package:ev_tech_user/Screens/Address/Model/get_address_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalVariables {
   static String? authToken;
   static String? role;
+  static AddressData? selectedAddress;
+
+  static const String _selectedAddressKey = 'selected_address';
 
   /// ====== TOKEN ======
   static Future<void> setToken(String token) async {
@@ -21,6 +27,44 @@ class GlobalVariables {
     authToken = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
+  }
+
+  /// ====== ADDRESS SELECTION ======
+  static Future<void> setSelectedAddress(AddressData? address) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (address == null || address.id == null) {
+      selectedAddress = null;
+      await prefs.remove(_selectedAddressKey);
+      return;
+    }
+
+    selectedAddress = address;
+    await prefs.setString(_selectedAddressKey, jsonEncode(address.toJson()));
+  }
+
+  static Future<void> loadSelectedAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedValue = prefs.getString(_selectedAddressKey);
+
+    if (storedValue == null || storedValue.isEmpty) {
+      selectedAddress = null;
+      return;
+    }
+
+    try {
+      final decoded = jsonDecode(storedValue) as Map<String, dynamic>;
+      selectedAddress = AddressData.fromJson(decoded);
+    } catch (_) {
+      selectedAddress = null;
+      await prefs.remove(_selectedAddressKey);
+    }
+  }
+
+  static Future<void> clearSelectedAddress() async {
+    selectedAddress = null;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_selectedAddressKey);
   }
 
   /// ====== Role ======

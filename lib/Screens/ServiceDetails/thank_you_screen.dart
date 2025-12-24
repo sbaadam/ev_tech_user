@@ -91,7 +91,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        Align(alignment: Alignment.topLeft,child: CustomText(text: bookingProvider.bookingDetailsModel.data?.service?.name??'', fontSize: 16, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor)),
+                        Align(alignment: Alignment.topLeft,child: CustomText(text: bookingProvider.bookingDetailsModel.data?.serviceSnapshot?.name??'', fontSize: 16, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor)),
                         const SizedBox(height: 8),
                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children:  [CustomText(text: StringsConstant.strDateTime, fontSize: 12, fontWeight: AppTheme.fontLight), CustomText(text: '${bookingProvider.bookingDetailsModel.data?.date} ${bookingProvider.bookingDetailsModel.data?.time}', fontSize: 12, fontWeight: AppTheme.fontLight)]),
                         SizedBox(height: 60),
@@ -105,7 +105,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                             dashGapLength: 8,
                             dashGapColor: Colors.transparent),
                         SizedBox(height: 26),
-                        CustomText(text: '₹${bookingProvider.bookingDetailsModel.data?.grandTotal}', fontSize: 16, fontWeight: AppTheme.fontSemiBold,color: AppTheme.greenColor),
+                        CustomText(text: '₹ ${bookingProvider.bookingDetailsModel.data?.grandTotal}', fontSize: 16, fontWeight: AppTheme.fontSemiBold,color: AppTheme.greenColor),
                         SizedBox(height: 10),
                       ],
                     ),

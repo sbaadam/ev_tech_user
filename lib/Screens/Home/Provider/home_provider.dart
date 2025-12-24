@@ -160,7 +160,7 @@ class HomeProvider with ChangeNotifier {
 
   ///address
   GetAddressModel getAddressModel = GetAddressModel();
-  AddressData selectAddress = AddressData();
+  AddressData selectAddress = GlobalVariables.selectedAddress ?? AddressData();
   String editId='';
   TextEditingController nameCon = TextEditingController();
   TextEditingController mobileCon = TextEditingController();
@@ -173,6 +173,11 @@ class HomeProvider with ChangeNotifier {
 
   setAddress(AddressData value) {
     selectAddress = value;
+    if (value.id != null) {
+      GlobalVariables.setSelectedAddress(value);
+    } else {
+      GlobalVariables.clearSelectedAddress();
+    }
     notifyListeners();
   }
 
@@ -206,6 +211,7 @@ class HomeProvider with ChangeNotifier {
 
       if (res['status'] == true) {
         getAddressModel = GetAddressModel.fromJson(res);
+        _ensurePersistedAddressSelection();
       } else {
         showToast(res['message'] ?? 'Data not loaded');
       }
@@ -559,8 +565,8 @@ class HomeProvider with ChangeNotifier {
         'latitude': latCon.text.trim(),
         'longitude': longCon.text.trim(),
         'notes': noteCon.text.trim(),
-        'coupon_code_id': '',
-        'coupon_applied_amount': '',
+        'coupon_code_id': selectCoupon.id.toString()=='null'?'':selectCoupon.id.toString(),
+        'coupon_applied_amount': selectCoupon.discountAmount.toString()=='null'?'':selectCoupon.discountAmount.toString(),
         'date': selectDate,
         'time': selectTime,
         'cgst_amount': ((double.tryParse(servicesData.price.toString()) ?? 0) * 5 / 100).toString(),
@@ -585,7 +591,12 @@ class HomeProvider with ChangeNotifier {
               context,
               ThankYouScreen(id: data['booking']['id'].toString()),
             );
-
+            servicesData = ServicesData();
+            latCon.text = '';
+            longCon.text = '';
+            noteCon.text = '';
+            selectDate = '';
+            selectTime = '';
           } else {
             showToast("❌ ${data['message'] ?? 'Add address failed'}");
           }
@@ -595,14 +606,6 @@ class HomeProvider with ChangeNotifier {
       }
     } catch (e) {
       showToast("❌ Something went wrong");
-    } finally {
-      servicesData = ServicesData();
-      selectAddress = AddressData();
-      latCon.text = '';
-      longCon.text = '';
-      noteCon.text = '';
-      selectDate = '';
-      selectTime = '';
     }
   }
 
@@ -643,5 +646,42 @@ class HomeProvider with ChangeNotifier {
     } finally {
      notifyListeners();
     }
+  }
+
+  void _ensurePersistedAddressSelection() {
+    final addresses = getAddressModel.data;
+
+    if (addresses == null || addresses.isEmpty) {
+      selectAddress = AddressData();
+      GlobalVariables.clearSelectedAddress();
+      return;
+    }
+
+    AddressData? matched;
+    final persistedId = GlobalVariables.selectedAddress?.id;
+
+    if (persistedId != null) {
+      final persistedMatch = addresses.firstWhere(
+        (address) => address.id == persistedId,
+        orElse: () => AddressData(),
+      );
+      if (persistedMatch.id != null) {
+        matched = persistedMatch;
+      }
+    }
+
+    if (matched == null && selectAddress.id != null) {
+      final currentMatch = addresses.firstWhere(
+        (address) => address.id == selectAddress.id,
+        orElse: () => AddressData(),
+      );
+      if (currentMatch.id != null) {
+        matched = currentMatch;
+      }
+    }
+
+    matched ??= addresses.first;
+    selectAddress = matched;
+    GlobalVariables.setSelectedAddress(selectAddress);
   }
 }

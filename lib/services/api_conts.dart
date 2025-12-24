@@ -22,4 +22,6 @@ class ApiConstant {
   static const String getBookedServices= 'get-booked-services?booked_service_id=';
   static const String getNotification = 'get-notification';
   static const String   deleteNotification = 'delete-notification';
+  static const String   cancelBookedService = 'cancel-booked-service?service_booking_id=';
+  static const String   serviceRating = 'service-rating';
 }

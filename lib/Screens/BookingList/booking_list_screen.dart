@@ -57,7 +57,7 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: AppTheme.appColorShade25),
                                 child: Column(
                                   children: [
-                                    Row(children: [CustomText(text: bookingProvider.bookingModel.data?[index].service?.name??'', fontSize: 14, fontWeight: AppTheme.fontMedium), Spacer(), CustomText(text: '${bookingProvider.bookingModel.data?[index].bookingId}', fontSize: 14, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor)]),
+                                    Row(children: [CustomText(text: bookingProvider.bookingModel.data?[index].serviceSnapshot?.name??'', fontSize: 14, fontWeight: AppTheme.fontMedium), Spacer(), CustomText(text: '${bookingProvider.bookingModel.data?[index].bookingId}', fontSize: 14, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor)]),
                                     SizedBox(height: 05),
                                     Row(
                                       children: [
@@ -76,7 +76,9 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                       ],
                                     ),
                                     if (bookingProvider.bookingModel.data?[index].bookingStatus == 'pending') Divider(color: AppTheme.colorGrey, thickness: 0.2),
-                                    if (bookingProvider.bookingModel.data?[index].bookingStatus == 'pending') BorderButton(text: StringsConstant.strCancel, onTap: () {},height:35,radius:10),
+                                    if (bookingProvider.bookingModel.data?[index].bookingStatus == 'pending') BorderButton(text: StringsConstant.strCancel, onTap: () {
+                                      showCancelPopup(context, bookingProvider.bookingModel.data?[index].id.toString()??'');
+                                    },height:35,radius:10),
                                   ],
                                 ),
                               ),
@@ -91,6 +93,65 @@ class _BookingListScreenState extends State<BookingListScreen> {
           ],
         ),
       ),
+    );
+  }
+  void showCancelPopup(BuildContext context, String id) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctx) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppTheme.appColor, // black background
+              borderRadius: BorderRadius.circular(16),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// Top Title and Close Icon
+                Row(
+                  children: [
+                    Spacer(),
+                    CustomText(text:"Cancel", fontSize: 16, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(decoration: BoxDecoration(color: AppTheme.greenColor, shape: BoxShape.circle), padding: const EdgeInsets.all(4), child: const Icon(Icons.close, size: 16, color: Colors.black)),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                CustomText(text: 'Are You Sure you want to cancel booking?', fontSize: 14, fontWeight: AppTheme.fontRegular),
+
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(child: OutlinedButton(style: OutlinedButton.styleFrom(side: BorderSide(color: AppTheme.greenColor), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), padding: const EdgeInsets.symmetric(vertical: 14)), onPressed: () => Navigator.pop(context), child: CustomText(text: 'No', fontSize: 14, fontWeight: AppTheme.fontMedium, color: AppTheme.greenColor))),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.greenColor, foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), padding: const EdgeInsets.symmetric(vertical: 14)),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Provider.of<BookingDetailsProvider>(context, listen: false).cancelBookingApi(context, id,false);
+                        },
+                        child: CustomText(text: 'Yes', fontSize: 14, fontWeight: AppTheme.fontMedium, color: AppTheme.appColor),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

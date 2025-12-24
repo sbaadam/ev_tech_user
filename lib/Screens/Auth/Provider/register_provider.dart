@@ -16,7 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class RegisterProvider with ChangeNotifier {
-  String userImage='';
+  String userImage = '';
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
@@ -32,7 +32,7 @@ class RegisterProvider with ChangeNotifier {
 
     // API body
     try {
-      final body = {'name': nameController.text.trim(), 'mobile': mobileController.text.trim(), 'email': emailController.text.trim(), 'password': passController.text.trim(), 'role': 'user', 'vehicle_name': vehicleNameController.text.trim(), 'vehicle_number': vehicleNoController.text.trim(), 'vehicle_model': modelController.text.trim(), 'vehicle_year': vYearController.text.trim(), 'fcm_token': fcmTokenString};
+      final body = {'name': nameController.text.trim(), 'mobile': mobileController.text.trim(), 'email': emailController.text.trim(), 'password': passController.text.trim(), 'role': 'user', 'vehicle_name': vehicleNameController.text.trim(), 'vehicle_number': vehicleNoController.text.trim(), 'vehicle_model': modelController.text.trim(), 'vehicle_year': vYearController.text.trim(), 'fcm_token': fcmTokenString, 'state_id': '101', 'city_id': '783'};
 
       EasyLoading.show(status: 'Registering...');
 
@@ -64,9 +64,9 @@ class RegisterProvider with ChangeNotifier {
     }
   }
 
-
   ///update
   File? pickedImageFile;
+
   Future<void> pickAndCropImage(BuildContext context) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -75,10 +75,7 @@ class RegisterProvider with ChangeNotifier {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: pickedFile.path,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1), // Square crop
-        uiSettings: [
-          AndroidUiSettings(toolbarTitle: 'Crop Image', toolbarColor: AppTheme.greenColor, toolbarWidgetColor: Colors.white, hideBottomControls: false, lockAspectRatio: false),
-          IOSUiSettings(title: 'Crop Image', aspectRatioLockEnabled: false),
-        ],
+        uiSettings: [AndroidUiSettings(toolbarTitle: 'Crop Image', toolbarColor: AppTheme.greenColor, toolbarWidgetColor: Colors.white, hideBottomControls: false, lockAspectRatio: false), IOSUiSettings(title: 'Crop Image', aspectRatioLockEnabled: false)],
       );
 
       if (croppedFile != null) {
@@ -88,10 +85,12 @@ class RegisterProvider with ChangeNotifier {
       }
     }
   }
-  Future<void> setProfile(String value)async{
-    userImage=value;
+
+  Future<void> setProfile(String value) async {
+    userImage = value;
     notifyListeners();
   }
+
   Future<void> uploadImage(BuildContext context) async {
     final networkProvider = NetworkProvider();
 
@@ -108,7 +107,7 @@ class RegisterProvider with ChangeNotifier {
 
       EasyLoading.show(status: 'Updating image...');
 
-      final response = await networkProvider.postRequestWithFile(context,ApiConstant.fileUpload, body: body, headers: {'Authorization': 'Bearer $authToken'});
+      final response = await networkProvider.postRequestWithFile(context, ApiConstant.fileUpload, body: body, headers: {'Authorization': 'Bearer $authToken'});
 
       EasyLoading.dismiss();
 
@@ -129,7 +128,7 @@ class RegisterProvider with ChangeNotifier {
       showToast("❌ Something went wrong");
       debugPrint("Image upload Error: $e");
     } finally {
-      pickedImageFile=null;
+      pickedImageFile = null;
       notifyListeners();
     }
   }
@@ -145,18 +144,11 @@ class RegisterProvider with ChangeNotifier {
     }
     // API body
     try {
-      final body = {
-        'name': nameController.text,
-        'profile_photo': userImage,
-        'vehicle_name':vehicleNameController.text,
-        'vehicle_number': vehicleNoController.text,
-        'vehicle_model': modelController.text,
-        'vehicle_year': vYearController.text.trim()
-      };
+      final body = {'name': nameController.text, 'profile_photo': userImage, 'vehicle_name': vehicleNameController.text, 'vehicle_number': vehicleNoController.text, 'vehicle_model': modelController.text, 'vehicle_year': vYearController.text.trim()};
 
       EasyLoading.show(status: 'Updating...');
 
-      final response = await networkProvider.postRequest(context,ApiConstant.updateProfile, body: body, headers: {'Authorization': 'Bearer $authToken'});
+      final response = await networkProvider.postRequest(context, ApiConstant.updateProfile, body: body, headers: {'Authorization': 'Bearer $authToken'});
 
       EasyLoading.dismiss();
 

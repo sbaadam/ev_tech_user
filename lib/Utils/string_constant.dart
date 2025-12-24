@@ -26,6 +26,7 @@ class StringsConstant {
   static const strUploadRC = 'Upload RC';
   static const strSubscriptionSummary = 'Subscription Summary';
   static const strServices = 'Services';
+  static const strSubmit = 'Submit';
   static const strCategory = 'Categories';
   static const strSeeAll = 'See All';
   static const strYourActiveServices = 'Your Active Services';
